@@ -20,7 +20,7 @@ fun Application.configureRouting() {
             categoryRouting()
             newsRouting()
         }
-        route("/photos"){
+        route("/photo"){
             photosRouting()
         }
     }
