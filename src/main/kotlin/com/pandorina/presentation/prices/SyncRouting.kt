@@ -18,47 +18,47 @@ fun Route.syncRouting(){
                 message = MESSAGE_MISSING_CITY_ID
             )
         when (cityId) {
-            kumlucaConfig.id -> {
+            CityConfig.Kumluca.id -> {
                 val result = KumlucaPriceRepository().syncPrices()
                     ?: return@post call.respond(MESSAGE_FETCHING_IS_FAILED)
                 call.respondText(result)
             }
-            demreConfig.id -> {
+            CityConfig.Demre.id -> {
                 val result = DemrePriceRepository().syncPrices()
                     ?: return@post call.respond(MESSAGE_FETCHING_IS_FAILED)
                 call.respondText(result)
             }
-            finikeConfig.id -> {
+            CityConfig.Finike.id -> {
                 val result = FinikePriceRepository().syncPrices()
                     ?: return@post call.respond(MESSAGE_FETCHING_IS_FAILED)
                 call.respondText(result)
             }
-            alanyaConfig.id -> {
+            CityConfig.Alanya.id -> {
                 val result = AlanyaPriceRepository().syncPrices()
                     ?: return@post call.respond(MESSAGE_FETCHING_IS_FAILED)
                 call.respondText(result)
             }
-            serikConfig.id -> {
+            CityConfig.Serik.id -> {
                 val result = SerikPriceRepository().syncPrices()
                     ?: return@post call.respond(MESSAGE_FETCHING_IS_FAILED)
                 call.respondText(result)
             }
-            gazipasaConfig.id -> {
+            CityConfig.Gazipasa.id -> {
                 val result = GazipasaPriceRepository().syncPrices()
                     ?: return@post call.respond(MESSAGE_FETCHING_IS_FAILED)
                 call.respondText(result)
             }
-            antalyaConfig.id -> {
+            CityConfig.Antalya.id -> {
                 val result = AntalyaPriceRepository().syncPrices()
                     ?: return@post call.respond(MESSAGE_FETCHING_IS_FAILED)
                 call.respondText(result)
             }
-            istanbulConfig.id -> {
+            CityConfig.Istanbul.id -> {
                 val result = IstanbulPriceRepository().syncPrices()
                     ?: return@post call.respond(MESSAGE_FETCHING_IS_FAILED)
                 call.respondText(result)
             }
-            bozyaziConfig.id -> {
+            CityConfig.Bozyazi.id -> {
                 val result = BozyaziPriceRepository().syncPrices()
                     ?: return@post call.respond(MESSAGE_FETCHING_IS_FAILED)
                 call.respondText(result)

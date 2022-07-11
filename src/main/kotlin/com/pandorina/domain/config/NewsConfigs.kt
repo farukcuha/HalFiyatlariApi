@@ -1,41 +1,53 @@
 package com.pandorina.domain.config
 
-import com.pandorina.domain.model.config.NewsConfig
 
 const val URL_SON_DAKIKA = "https://www.sondakika.com"
 
-val guncel = NewsConfig(
-    id = 1,
-    title = "Güncel",
-    srcUrl = "$URL_SON_DAKIKA/guncel"
+@kotlinx.serialization.Serializable
+data class NewsConfigModel(
+    val id: Int,
+    val title: String,
+    val srcUrl: String,
 )
 
-val politika = NewsConfig(
-    id = 2,
-    title = "Politika",
-    srcUrl = "$URL_SON_DAKIKA/politika"
-)
+sealed class NewsConfig(
+    val id: Int,
+    val title: String,
+    val srcUrl: String,
+){
+    object Guncel: NewsConfig(
+        id = 1,
+        title = "Güncel",
+        srcUrl = "$URL_SON_DAKIKA/guncel"
+    )
 
-val ekonomi = NewsConfig(
-    id = 3,
-    title = "Ekonomi",
-    srcUrl = "$URL_SON_DAKIKA/ekonomi"
-)
+    object Politika: NewsConfig(
+        id = 2,
+        title = "Politika",
+        srcUrl = "$URL_SON_DAKIKA/politika"
+    )
 
-val spor = NewsConfig(
-    id = 4,
-    title = "Spor",
-    srcUrl = "$URL_SON_DAKIKA/spor"
-)
+    object Ekonomi: NewsConfig(
+        id = 3,
+        title = "Ekonomi",
+        srcUrl = "$URL_SON_DAKIKA/ekonomi"
+    )
 
-val dunya = NewsConfig(
-    id = 5,
-    title = "Dünya",
-    srcUrl = "$URL_SON_DAKIKA/dunya"
-)
+    object Spor: NewsConfig(
+        id = 4,
+        title = "Spor",
+        srcUrl = "$URL_SON_DAKIKA/spor"
+    )
 
-val yerel = NewsConfig(
-    id = 6,
-    title = "Yerel",
-    srcUrl = "$URL_SON_DAKIKA/yerel"
-)
+    object Dunya: NewsConfig(
+        id = 5,
+        title = "Dünya",
+        srcUrl = "$URL_SON_DAKIKA/dunya"
+    )
+
+    object Yerel: NewsConfig(
+        id = 6,
+        title = "Yerel",
+        srcUrl = "$URL_SON_DAKIKA/yerel"
+    )
+}

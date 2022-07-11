@@ -4,11 +4,11 @@ import com.pandorina.domain.config.*
 
 object NewsDataSource {
     val categories = listOf(
-        guncel,
-        politika,
-        ekonomi,
-        spor,
-        dunya,
-        yerel
+        NewsConfig.Guncel,
+        NewsConfig.Politika,
+        NewsConfig.Ekonomi,
+        NewsConfig.Spor,
+        NewsConfig.Dunya,
+        NewsConfig.Yerel
     )
 }

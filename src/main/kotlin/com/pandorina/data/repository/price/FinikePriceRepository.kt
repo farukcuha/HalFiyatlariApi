@@ -2,13 +2,13 @@ package com.pandorina.data.repository.price
 
 import com.pandorina.domain.model.jsoup.JsoupPrice
 import com.pandorina.data.remote.HtmlFetcher
-import com.pandorina.domain.config.finikeConfig
+import com.pandorina.domain.config.CityConfig
 
 class FinikePriceRepository : BasePriceRepository() {
 
     override suspend fun syncPrices(): String? {
         return HtmlFetcher<List<JsoupPrice>>(
-            url = finikeConfig.srcUrl,
+            url = CityConfig.Finike.srcUrl,
             parseHtml = { jsoup ->
                 mutableListOf<JsoupPrice>().apply {
                     val elements = jsoup.select("table > tbody > tr")
@@ -22,7 +22,7 @@ class FinikePriceRepository : BasePriceRepository() {
                         val highPrice = row.getOrNull(3)?.text()
                         add(
                             JsoupPrice(
-                                cityId = finikeConfig.id,
+                                cityId = CityConfig.Finike.id,
                                 priceDate = date,
                                 name = name,
                                 icon = icon,

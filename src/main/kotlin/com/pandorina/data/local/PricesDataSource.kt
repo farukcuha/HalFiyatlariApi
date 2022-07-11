@@ -8,15 +8,15 @@ import org.jetbrains.exposed.sql.transactions.transaction
 
 object PricesDataSource {
     val cities = listOf(
-        kumlucaConfig,
-        demreConfig,
-        finikeConfig,
-        alanyaConfig,
-        serikConfig,
-        gazipasaConfig,
-        antalyaConfig,
-        istanbulConfig,
-        bozyaziConfig,
+        CityConfig.Kumluca,
+        CityConfig.Demre,
+        CityConfig.Finike,
+        CityConfig.Alanya,
+        CityConfig.Serik,
+        CityConfig.Gazipasa,
+        CityConfig.Antalya,
+        CityConfig.Istanbul,
+        CityConfig.Bozyazi,
     )
 
     fun getPriceDates(cityId: Int?): List<String?>{

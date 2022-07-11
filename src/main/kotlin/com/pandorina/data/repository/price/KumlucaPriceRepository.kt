@@ -2,13 +2,13 @@ package com.pandorina.data.repository.price
 
 import com.pandorina.domain.model.jsoup.JsoupPrice
 import com.pandorina.data.remote.HtmlFetcher
-import com.pandorina.domain.config.kumlucaConfig
+import com.pandorina.domain.config.CityConfig
 
 class KumlucaPriceRepository : BasePriceRepository() {
 
     override suspend fun syncPrices(): String? {
         return HtmlFetcher<List<JsoupPrice>>(
-            url = kumlucaConfig.srcUrl,
+            url = CityConfig.Kumluca.srcUrl,
             parseHtml = { jsoup ->
                 mutableListOf<JsoupPrice>().apply {
                     val elements = jsoup.select("table > tbody > tr")
@@ -22,7 +22,7 @@ class KumlucaPriceRepository : BasePriceRepository() {
                         val highPrice = row.getOrNull(3)?.text()
                         add(
                             JsoupPrice(
-                                cityId = kumlucaConfig.id,
+                                cityId = CityConfig.Kumluca.id,
                                 priceDate = date,
                                 name = name,
                                 icon = icon,
