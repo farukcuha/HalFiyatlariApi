@@ -7,6 +7,6 @@ import io.ktor.server.routing.*
 
 fun Route.photosRouting(){
     get{
-        call.respond(photos.shuffled().take(5))
+        call.respond(photos.random())
     }
 }
