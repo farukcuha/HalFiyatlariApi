@@ -11,8 +11,8 @@ const val MESSAGE_FETCHING_IS_FAILED = "Birşeyler ters gitti!"
 const val MESSAGE_MISSING_CITY_ID = "Şehir kimliği bulunamadı!"
 
 fun Route.syncRouting(){
-    post("/sync") {
-        val cityId = call.request.queryParameters["cityId"]?.toInt()
+    post("/sync/{cityId}") {
+        val cityId = call.parameters["cityId"]
             ?: return@post call.respond(
                 status = HttpStatusCode.BadRequest,
                 message = MESSAGE_MISSING_CITY_ID

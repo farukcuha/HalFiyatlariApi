@@ -7,8 +7,8 @@ import io.ktor.server.response.*
 import io.ktor.server.routing.*
 
 fun Route.datesRouting(){
-    get("/dates"){
-        val cityId = call.request.queryParameters["cityId"]?.toInt() ?: return@get call.respond(
+    get("/dates/{cityId}"){
+        val cityId = call.parameters["cityId"] ?: return@get call.respond(
             status = HttpStatusCode.BadRequest,
             message = "Missing city id"
         )

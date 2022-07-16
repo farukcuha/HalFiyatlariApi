@@ -7,8 +7,8 @@ import io.ktor.server.response.*
 import io.ktor.server.routing.*
 
 fun Route.deleteRouting(){
-    post("/delete") {
-        val cityId = call.request.queryParameters["cityId"]?.toInt() ?: return@post call.respond(
+    post("/delete/{cityId}") {
+        val cityId = call.parameters["cityId"] ?: return@post call.respond(
             status = HttpStatusCode.BadRequest,
             message = "Missing city id"
         )

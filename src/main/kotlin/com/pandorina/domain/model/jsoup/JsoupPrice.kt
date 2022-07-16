@@ -3,7 +3,7 @@ package com.pandorina.domain.model.jsoup
 import kotlinx.serialization.Serializable
 
 data class JsoupPrice(
-    val cityId: Int? = null,
+    val cityId: String? = null,
     val priceDate: String? = null,
     val lastUpdatedTime: Long? = null,
     val name: String? = null,

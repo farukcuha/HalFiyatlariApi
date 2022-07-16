@@ -2,7 +2,7 @@ package com.pandorina.plugins
 
 import com.pandorina.presentation.news.categoryRouting
 import com.pandorina.presentation.news.newsRouting
-import com.pandorina.presentation.photos.photosRouting
+import com.pandorina.presentation.photos.photoRouting
 import com.pandorina.presentation.prices.*
 import io.ktor.server.application.*
 import io.ktor.server.routing.*
@@ -21,7 +21,7 @@ fun Application.configureRouting() {
             newsRouting()
         }
         route("/photo"){
-            photosRouting()
+            photoRouting()
         }
     }
 }

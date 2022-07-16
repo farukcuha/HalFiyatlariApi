@@ -6,8 +6,8 @@ import org.jetbrains.exposed.sql.Table
 
 object PriceTable: Table() {
     val id: Column<String?> = varchar("id", 100).nullable()
-    val cityId: Column<Int?> = integer("city_id").nullable()
-    val priceDate: Column<String?> = varchar("priceDate", 100).nullable()
+    val cityId: Column<String?> = varchar("city_id", 50).nullable()
+    val priceDate: Column<String?> = varchar("price_date", 100).nullable()
     val lastUpdatedTime: Column<Long?> = long("last_updated_time").nullable()
     val name: Column<String?> = varchar("name", 100).nullable()
     val icon: Column<String?> = varchar("icon", 100).nullable()

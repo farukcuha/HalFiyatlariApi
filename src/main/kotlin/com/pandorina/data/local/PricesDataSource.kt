@@ -19,7 +19,7 @@ object PricesDataSource {
         CityConfig.Bozyazi,
     )
 
-    fun getPriceDates(cityId: Int?): List<String?>{
+    fun getPriceDates(cityId: String?): List<String?>{
         return transaction {
             PriceTable
                 .select {
@@ -32,7 +32,7 @@ object PricesDataSource {
         }
     }
 
-    fun getPricesByDate(cityId: Int?, date: String?): PriceFetchResponse {
+    fun getPricesByDate(cityId: String?, date: String?): PriceFetchResponse {
         return transaction {
             val prices = PriceTable.select {
                 (PriceTable.cityId eq cityId) and (PriceTable.priceDate eq date)
@@ -40,7 +40,7 @@ object PricesDataSource {
                 it.toPrice()
             }
             PriceFetchResponse(
-                city_id = cityId,
+                cityId = cityId,
                 title = getCityTitleByCityId(cityId),
                 date = date,
                 size = prices.size,
@@ -49,7 +49,7 @@ object PricesDataSource {
         }
     }
 
-    private fun getCityTitleByCityId(cityId: Int?): String?{
+    private fun getCityTitleByCityId(cityId: String?): String?{
         return cities.find {
             it.id == cityId
         }?.title
@@ -63,7 +63,7 @@ object PricesDataSource {
         }
     }
 
-    fun deletePricesByCityId(cityId: Int?){
+    fun deletePricesByCityId(cityId: String?){
         transaction {
             PriceTable.deleteWhere {
                 PriceTable.cityId eq cityId
@@ -71,7 +71,7 @@ object PricesDataSource {
         }
     }
 
-    fun deletePricesByCityAndDate(cityId: Int?, date: String?){
+    fun deletePricesByCityAndDate(cityId: String?, date: String?){
         transaction {
             PriceTable.deleteWhere {
                 PriceTable.cityId eq cityId
@@ -86,7 +86,7 @@ object PricesDataSource {
         }
     }
 
-    fun getLastPrices(cityId: Int?): PriceFetchResponse {
+    fun getLastPrices(cityId: String?): PriceFetchResponse {
         return getPricesByDate(cityId, getPriceDates(cityId).firstOrNull())
     }
 
@@ -95,8 +95,8 @@ object PricesDataSource {
             name = this[PriceTable.name],
             icon = this[PriceTable.icon],
             measure = this[PriceTable.measure],
-            price_primary = this[PriceTable.pricePrimary],
-            price_secondary = this[PriceTable.priceSecondary],
+            pricePrimary = this[PriceTable.pricePrimary],
+            priceSecondary = this[PriceTable.priceSecondary],
         )
     }
 }
