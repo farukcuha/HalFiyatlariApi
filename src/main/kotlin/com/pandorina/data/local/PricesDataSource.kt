@@ -1,12 +1,18 @@
 package com.pandorina.data.local
 
-import com.pandorina.domain.model.core.Price
 import com.pandorina.domain.model.core.PriceFetchResponse
 import com.pandorina.domain.config.*
-import org.jetbrains.exposed.sql.*
-import org.jetbrains.exposed.sql.transactions.transaction
+import com.pandorina.domain.model.dto.PriceDto
+import org.litote.kmongo.coroutine.coroutine
+import org.litote.kmongo.eq
+import org.litote.kmongo.reactivestreams.KMongo
 
 object PricesDataSource {
+    private val client = KMongo.createClient(
+        connectionString = "mongodb+srv://farukcuha:Ahmet+2002@halfiyatlaricluster.ugfrb.mongodb.net/?retryWrites=true&w=majority"
+    ).coroutine.getDatabase("hal_fiyatlari_database")
+    private val collection = client.getCollection<PriceDto>("prices")
+
     val cities = listOf(
         CityConfig.Kumluca,
         CityConfig.Demre,
@@ -19,34 +25,40 @@ object PricesDataSource {
         CityConfig.Bozyazi,
     )
 
-    fun getPriceDates(cityId: String?): List<String?>{
-        return transaction {
-            PriceTable
-                .select {
-                    PriceTable.cityId eq cityId
-                }
-                .orderBy(PriceTable.lastUpdatedTime to SortOrder.DESC)
-                .map {
-                    it[PriceTable.priceDate]
-                }.distinct()
-        }
+    suspend fun insertPrices(prices: List<PriceDto>): Boolean {
+        return collection
+            .insertMany(prices).wasAcknowledged()
     }
 
-    fun getPricesByDate(cityId: String?, date: String?): PriceFetchResponse {
-        return transaction {
-            val prices = PriceTable.select {
-                (PriceTable.cityId eq cityId) and (PriceTable.priceDate eq date)
+    suspend fun getPriceDates(cityId: String?): List<String?>{
+        return collection
+            .find(PriceDto::cityId eq cityId)
+            .descendingSort(PriceDto::lastUpdatedTime)
+            .toList()
+            .distinctBy {
+                it.priceDate
             }.map {
+                it.priceDate
+            }
+    }
+
+    suspend fun getPricesByDate(cityId: String?, date: String?): PriceFetchResponse {
+        val prices = collection
+            .find(
+                PriceDto::cityId eq cityId,
+                PriceDto::priceDate eq date
+            )
+            .toList()
+            .map {
                 it.toPrice()
             }
-            PriceFetchResponse(
-                cityId = cityId,
-                title = getCityTitleByCityId(cityId),
-                date = date,
-                size = prices.size,
-                prices = prices
-            )
-        }
+        return PriceFetchResponse(
+            cityId = cityId,
+            title = getCityTitleByCityId(cityId),
+            date = date,
+            size = prices.size,
+            prices = prices
+        )
     }
 
     private fun getCityTitleByCityId(cityId: String?): String?{
@@ -55,48 +67,30 @@ object PricesDataSource {
         }?.title
     }
 
-    fun isPriceExist(priceId: String?): Boolean{
-        return transaction {
-            !PriceTable.select {
-                PriceTable.id eq priceId
-            }.empty()
-        }
+    suspend fun isPriceExist(priceId: String?): Boolean{
+        return collection
+            .find(PriceDto::id eq priceId)
+            .toList()
+            .isNotEmpty()
     }
 
-    fun deletePricesByCityId(cityId: String?){
-        transaction {
-            PriceTable.deleteWhere {
-                PriceTable.cityId eq cityId
-            }
-        }
+    suspend fun deletePricesByCityId(cityId: String?): Boolean {
+        return collection
+            .deleteMany(PriceDto::cityId eq cityId).wasAcknowledged()
     }
 
-    fun deletePricesByCityAndDate(cityId: String?, date: String?){
-        transaction {
-            PriceTable.deleteWhere {
-                PriceTable.cityId eq cityId
-                PriceTable.priceDate eq date
-            }
-        }
+    suspend fun deletePricesByCityAndDate(cityId: String?, date: String?): Boolean {
+        return collection.deleteMany(
+            PriceDto::cityId eq cityId,
+            PriceDto::priceDate eq date,
+        ).wasAcknowledged()
     }
 
-    fun deleteAllPrices(){
-        transaction {
-            PriceTable.deleteAll()
-        }
+    suspend fun deleteAllPrices(){
+        collection.drop()
     }
 
-    fun getLastPrices(cityId: String?): PriceFetchResponse {
+    suspend fun getLastPrices(cityId: String?): PriceFetchResponse {
         return getPricesByDate(cityId, getPriceDates(cityId).firstOrNull())
-    }
-
-    private fun ResultRow.toPrice(): Price {
-        return Price(
-            name = this[PriceTable.name],
-            icon = this[PriceTable.icon],
-            measure = this[PriceTable.measure],
-            pricePrimary = this[PriceTable.pricePrimary],
-            priceSecondary = this[PriceTable.priceSecondary],
-        )
     }
 }

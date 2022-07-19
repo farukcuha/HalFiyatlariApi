@@ -5,6 +5,7 @@ import com.pandorina.data.local.PricesDataSource
 import com.pandorina.domain.model.jsoup.JsoupPrice
 import com.pandorina.data.remote.JsoupResult
 import com.pandorina.data.remote.collectJsoupResult
+import com.pandorina.domain.model.dto.PriceDto
 import kotlinx.coroutines.flow.Flow
 import org.jetbrains.exposed.exceptions.ExposedSQLException
 import org.jetbrains.exposed.sql.*
@@ -20,27 +21,29 @@ abstract class BasePriceRepository {
             onSuccess = { list ->
                 val date = list?.first()?.priceDate
                 try {
-                    transaction {
-                        val controlId = primaryIdGenerator(list?.firstOrNull())
-                        if (PricesDataSource.isPriceExist(controlId)){
-                            responseMessage = "Prices are already up to date : $date"
-                        } else {
-                            val time = System.currentTimeMillis()
-                            list?.forEach { price ->
-                                PriceTable.insert {
-                                    it[id] = primaryIdGenerator(price)
-                                    it[cityId] = price.cityId
-                                    it[priceDate] = price.priceDate
-                                    it[lastUpdatedTime] = time
-                                    it[name] = price.name
-                                    it[icon] = price.icon
-                                    it[measure] = price.measure
-                                    it[pricePrimary] = price.pricePrimary
-                                    it[priceSecondary] = price.priceSecondary
-                                }
-                                println(primaryIdGenerator(price))
+                    val controlId = primaryIdGenerator(list?.firstOrNull())
+                    if (PricesDataSource.isPriceExist(controlId)){
+                        responseMessage = "Prices are already up to date : $date"
+                    } else {
+                        val time = System.currentTimeMillis()
+                        list?.map {
+                            PriceDto(
+                                id = primaryIdGenerator(it),
+                                cityId = it.cityId,
+                                priceDate = it.priceDate,
+                                lastUpdatedTime = time,
+                                name = it.name,
+                                icon = it.icon,
+                                measure = it.measure,
+                                pricePrimary = it.pricePrimary,
+                                priceSecondary = it.priceSecondary
+                            )
+                        }?.let { prices ->
+                            responseMessage = if (PricesDataSource.insertPrices(prices)){
+                                "Sync is successfully! : $date"
+                            } else{
+                                "Sync is failed!"
                             }
-                            responseMessage = "Sync is successfully! : $date"
                         }
                     }
                 } catch (e: ExposedSQLException){

@@ -41,6 +41,7 @@ dependencies {
     implementation("org.jetbrains.exposed:exposed-dao:$exposedVersion")
     implementation("org.jetbrains.exposed:exposed-jdbc:$exposedVersion")
     implementation("com.h2database:h2:2.1.212")
+    implementation("org.litote.kmongo:kmongo-coroutine:4.2.8")
     implementation("org.jsoup:jsoup:1.15.1")
 
 }
