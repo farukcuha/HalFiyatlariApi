@@ -1,12 +1,21 @@
 package com.pandorina.data.repository.price
 
+import com.google.gson.Gson
+import com.google.gson.GsonBuilder
 import com.pandorina.data.local.PriceTable
 import com.pandorina.data.local.PricesDataSource
 import com.pandorina.domain.model.jsoup.JsoupPrice
 import com.pandorina.data.remote.JsoupResult
 import com.pandorina.data.remote.collectJsoupResult
 import com.pandorina.domain.model.dto.PriceDto
+import io.ktor.client.*
+import io.ktor.client.engine.cio.*
+import io.ktor.client.request.*
+import io.ktor.client.statement.*
+import io.ktor.http.*
 import kotlinx.coroutines.flow.Flow
+import kotlinx.serialization.json.JsonObject
+import org.h2.util.json.JSONObject
 import org.jetbrains.exposed.exceptions.ExposedSQLException
 import org.jetbrains.exposed.sql.*
 import org.jetbrains.exposed.sql.transactions.transaction
@@ -15,39 +24,30 @@ abstract class BasePriceRepository {
 
     abstract suspend fun syncPrices(): String?
 
-    suspend fun Flow<JsoupResult<List<JsoupPrice>>>.saveToDatabase(): String?{
+    suspend fun Flow<JsoupResult<List<JsoupPrice>>>.saveToDatabase(): String? {
         var responseMessage: String? = null
         collectJsoupResult(
             onSuccess = { list ->
-                val date = list?.first()?.priceDate
-                try {
-                    val controlId = primaryIdGenerator(list?.firstOrNull())
-                    if (PricesDataSource.isPriceExist(controlId)){
-                        responseMessage = "Prices are already up to date : $date"
-                    } else {
-                        val time = System.currentTimeMillis()
-                        list?.map {
-                            PriceDto(
-                                id = primaryIdGenerator(it),
-                                cityId = it.cityId,
-                                priceDate = it.priceDate,
-                                lastUpdatedTime = time,
-                                name = it.name,
-                                icon = it.icon,
-                                measure = it.measure,
-                                pricePrimary = it.pricePrimary,
-                                priceSecondary = it.priceSecondary
-                            )
-                        }?.let { prices ->
-                            responseMessage = if (PricesDataSource.insertPrices(prices)){
-                                "Sync is successfully! : $date"
-                            } else{
-                                "Sync is failed!"
-                            }
-                        }
+                val time = System.currentTimeMillis()
+                list?.map {
+                    PriceDto(
+                        id = primaryIdGenerator(it),
+                        cityId = it.cityId,
+                        priceDate = it.priceDate,
+                        lastUpdatedTime = time,
+                        name = it.name,
+                        icon = it.icon,
+                        measure = it.measure,
+                        pricePrimary = it.pricePrimary,
+                        priceSecondary = it.priceSecondary
+                    )
+                }?.let {
+                    try {
+                        val process = insertPrices(it)
+                        responseMessage = "${process.status.value} - ${process.status.description}"
+                    } catch (e: Exception){
+                        e.localizedMessage
                     }
-                } catch (e: ExposedSQLException){
-                    responseMessage = "Sync is failed! : ${e.localizedMessage}"
                 }
             },
             onFailure = {
@@ -58,14 +58,24 @@ abstract class BasePriceRepository {
         return responseMessage
     }
 
-    private fun primaryIdGenerator(jsoupPrice: JsoupPrice?): String{
+    private fun primaryIdGenerator(jsoupPrice: JsoupPrice?): String {
         return StringBuilder().run {
-            append("${jsoupPrice?.cityId} - ")
-            append("${jsoupPrice?.priceDate} - ")
-            append("${jsoupPrice?.name} - ")
-            append("${jsoupPrice?.pricePrimary} - ")
+            append("${jsoupPrice?.cityId}")
+            append("${jsoupPrice?.priceDate}")
+            append("${jsoupPrice?.name}")
+            append("${jsoupPrice?.pricePrimary}")
             append("${jsoupPrice?.priceSecondary}")
-            this.toString()
+            this.toString().lowercase().trim()
+        }
+    }
+    private suspend fun insertPrices(list: List<PriceDto>): HttpResponse {
+        val client = HttpClient(CIO)
+        return client.put {
+            url("https://halfiyatlari-511c9-default-rtdb.firebaseio.com/prices" +
+                    "/${list[0].cityId}" +
+                    "/${list[0].priceDate?.replace("/", "")}.json")
+            contentType(ContentType.Application.Json)
+            setBody(Gson().toJson(list))
         }
     }
 }

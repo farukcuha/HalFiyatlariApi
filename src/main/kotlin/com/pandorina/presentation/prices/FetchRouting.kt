@@ -12,9 +12,9 @@ fun Route.fetchRouting(){
             status = HttpStatusCode.BadRequest,
             message = "Missing city id"
         )
-        val date = call.request.queryParameters["date"] ?: return@get call.respond(
+        /*val date = call.request.queryParameters["date"] ?: return@get call.respond(
             PricesDataSource.getLastPrices(cityId)
-        )
-        call.respond(PricesDataSource.getPricesByDate(cityId, date))
+        )*/
+        call.respond(PricesDataSource.getPricesByDate(cityId, null))
     }
 }

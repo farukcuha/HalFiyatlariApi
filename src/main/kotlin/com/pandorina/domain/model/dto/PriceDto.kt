@@ -2,6 +2,7 @@ package com.pandorina.domain.model.dto
 
 import com.pandorina.domain.model.core.Price
 
+@kotlinx.serialization.Serializable
 data class PriceDto(
     val id: String?,
     val cityId: String?,
