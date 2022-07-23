@@ -4,15 +4,22 @@ import com.google.gson.Gson
 import com.pandorina.domain.model.jsoup.JsoupPrice
 import com.pandorina.data.remote.JsoupResult
 import com.pandorina.data.remote.collectJsoupResult
-import com.pandorina.domain.model.dto.PriceDto
+import com.pandorina.domain.model.dto.*
 import io.ktor.client.*
+import io.ktor.client.call.*
 import io.ktor.client.engine.cio.*
 import io.ktor.client.request.*
 import io.ktor.client.statement.*
 import io.ktor.http.*
 import kotlinx.coroutines.flow.Flow
+import org.jetbrains.exposed.exceptions.ExposedSQLException
+import org.jetbrains.exposed.sql.*
+import org.jetbrains.exposed.sql.transactions.transaction
 
 abstract class BasePriceRepository {
+    companion object {
+        const val FIRESTORE_DATABASE_ID = "halfiyatlari-511c9"
+    }
 
     abstract suspend fun syncPrices(): String?
 
@@ -23,7 +30,7 @@ abstract class BasePriceRepository {
                 val time = System.currentTimeMillis()
                 list?.map {
                     PriceDto(
-                        id = primaryIdGenerator(it),
+                        id = getPricePrimaryId(it),
                         cityId = it.cityId,
                         priceDate = it.priceDate,
                         lastUpdatedTime = time,
@@ -33,13 +40,8 @@ abstract class BasePriceRepository {
                         pricePrimary = it.pricePrimary,
                         priceSecondary = it.priceSecondary
                     )
-                }?.let {
-                    try {
-                        val process = insertPrices(it)
-                        responseMessage = "${process.status.value} - ${process.status.description}"
-                    } catch (e: Exception){
-                        e.localizedMessage
-                    }
+                }?.let { prices ->
+                    responseMessage = insertPrices(prices).body()
                 }
             },
             onFailure = {
@@ -50,24 +52,44 @@ abstract class BasePriceRepository {
         return responseMessage
     }
 
-    private fun primaryIdGenerator(jsoupPrice: JsoupPrice?): String {
+    private fun getPricePrimaryId(jsoupPrice: JsoupPrice?): String {
         return StringBuilder().run {
-            append("${jsoupPrice?.cityId}")
-            append("${jsoupPrice?.priceDate}")
-            append("${jsoupPrice?.name}")
-            append("${jsoupPrice?.pricePrimary}")
+            append("${jsoupPrice?.cityId} - ")
+            append("${jsoupPrice?.priceDate} - ")
+            append("${jsoupPrice?.name} - ")
+            append("${jsoupPrice?.pricePrimary} - ")
             append("${jsoupPrice?.priceSecondary}")
-            this.toString().lowercase().trim()
+            this.toString().trim().lowercase()
+                .replace("/", "")
+                .replace("-", "")
+                .replace(" ", "")
         }
     }
+
     private suspend fun insertPrices(list: List<PriceDto>): HttpResponse {
         val client = HttpClient(CIO)
-        return client.put {
-            url("https://halfiyatlari-511c9-default-rtdb.firebaseio.com/prices" +
-                    "/${list[0].cityId}" +
-                    "/${list[0].priceDate?.replace("/", "")}.json")
+        val prices = list.map {
+            Write(
+                update = Update(
+                    fields = Fields(
+                        cityId = CityId(it.cityId ?: ""),
+                        icon = Icon(it.icon ?: ""),
+                        id = Id(it.id ?: ""),
+                        lastUpdatedTime = LastUpdatedTime(it.lastUpdatedTime ?: -1),
+                        measure = Measure(it.measure ?: ""),
+                        name = Name(it.name ?: ""),
+                        priceDate = PriceDate(it.priceDate ?: ""),
+                        pricePrimary = PricePrimary(it.pricePrimary ?: ""),
+                        priceSecondary = PriceSecondary(it.priceSecondary ?: "")
+                    ),
+                    name = "projects/$FIRESTORE_DATABASE_ID/databases/(default)/documents/prices/${it.id}"
+                )
+            )
+        }
+        return client.post {
+            url("https://firestore.googleapis.com/v1beta1/projects/$FIRESTORE_DATABASE_ID/databases/(default)/documents:commit")
             contentType(ContentType.Application.Json)
-            setBody(Gson().toJson(list))
+            setBody(Gson().toJson(FirestorePriceDto(writes = prices)))
         }
     }
 }
