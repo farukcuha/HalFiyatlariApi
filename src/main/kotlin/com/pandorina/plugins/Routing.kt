@@ -10,6 +10,7 @@ fun Application.configureRouting() {
     routing {
         route("/prices") {
             syncRouting()
+            syncAllRouting()
         }
         route("/news"){
             categoryRouting()

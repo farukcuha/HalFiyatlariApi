@@ -4,6 +4,7 @@ import com.google.gson.Gson
 import com.pandorina.domain.model.jsoup.JsoupPrice
 import com.pandorina.data.remote.JsoupResult
 import com.pandorina.data.remote.collectJsoupResult
+import com.pandorina.domain.model.SyncResponse
 import com.pandorina.domain.model.dto.*
 import io.ktor.client.*
 import io.ktor.client.call.*
@@ -12,19 +13,17 @@ import io.ktor.client.request.*
 import io.ktor.client.statement.*
 import io.ktor.http.*
 import kotlinx.coroutines.flow.Flow
-import org.jetbrains.exposed.exceptions.ExposedSQLException
 import org.jetbrains.exposed.sql.*
-import org.jetbrains.exposed.sql.transactions.transaction
 
 abstract class BasePriceRepository {
     companion object {
         const val FIRESTORE_DATABASE_ID = "halfiyatlari-511c9"
     }
 
-    abstract suspend fun syncPrices(): String?
+    abstract suspend fun syncPrices(): SyncResponse?
 
-    suspend fun Flow<JsoupResult<List<JsoupPrice>>>.saveToDatabase(): String? {
-        var responseMessage: String? = null
+    suspend fun Flow<JsoupResult<List<JsoupPrice>>>.saveToDatabase(): SyncResponse? {
+        var syncResponse: SyncResponse? = null
         collectJsoupResult(
             onSuccess = { list ->
                 val time = System.currentTimeMillis()
@@ -41,15 +40,21 @@ abstract class BasePriceRepository {
                         priceSecondary = it.priceSecondary
                     )
                 }?.let { prices ->
-                    responseMessage = insertPrices(prices).body()
+                    val httpResponse = insertPrices(prices)
+                    syncResponse = SyncResponse(
+                        statusCode = httpResponse.status.value,
+                        message = httpResponse.body()
+                    )
                 }
             },
             onFailure = {
-                println(it?.localizedMessage)
-                responseMessage = "Sync is failed! : ${it?.localizedMessage}"
+                syncResponse = SyncResponse(
+                    statusCode = HttpStatusCode.InternalServerError.value,
+                    message = it?.localizedMessage.toString()
+                )
             }
         )
-        return responseMessage
+        return syncResponse
     }
 
     private fun getPricePrimaryId(jsoupPrice: JsoupPrice?): String {

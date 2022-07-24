@@ -1,6 +1,5 @@
 package com.pandorina
 
-import com.pandorina.domain.model.dto.*
 import io.ktor.server.application.*
 import com.pandorina.plugins.*
 import kotlinx.coroutines.*
