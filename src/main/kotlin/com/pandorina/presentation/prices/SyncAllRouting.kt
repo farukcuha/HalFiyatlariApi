@@ -15,7 +15,7 @@ fun Route.syncAllRouting(){
         GazipasaPriceRepository().syncPrices()?: return@post call.respond("Gazipasa sync is failed!")
         AntalyaPriceRepository().syncPrices()?:  return@post call.respond("Antalya sync is failed!")
         IstanbulPriceRepository().syncPrices()?: return@post call.respond("İstanbul sync is failed!")
-        BozyaziPriceRepository().syncPrices()?: return@post call.respond("Bozyazi sync is failed!")
+        //BozyaziPriceRepository().syncPrices()?: return@post call.respond("Bozyazi sync is failed!")
         call.respond("Sync is successfull!")
     }
 }

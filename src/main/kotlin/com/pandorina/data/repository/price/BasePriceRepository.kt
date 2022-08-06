@@ -18,6 +18,7 @@ import org.jetbrains.exposed.sql.*
 abstract class BasePriceRepository {
     companion object {
         const val FIRESTORE_DATABASE_ID = "halfiyatlari-511c9"
+        val client = HttpClient(CIO)
     }
 
     abstract suspend fun syncPrices(): SyncResponse?
@@ -40,10 +41,10 @@ abstract class BasePriceRepository {
                         priceSecondary = it.priceSecondary
                     )
                 }?.let { prices ->
-                    val httpResponse = insertPrices(prices)
+                    val priceHttpResponse = insertPrices(prices)
                     syncResponse = SyncResponse(
-                        statusCode = httpResponse.status.value,
-                        message = httpResponse.body()
+                        statusCode = priceHttpResponse.status.value,
+                        message = priceHttpResponse.body()
                     )
                 }
             },
@@ -59,10 +60,10 @@ abstract class BasePriceRepository {
 
     private fun getPricePrimaryId(jsoupPrice: JsoupPrice?): String {
         return StringBuilder().run {
-            append("${jsoupPrice?.cityId} - ")
-            append("${jsoupPrice?.priceDate} - ")
-            append("${jsoupPrice?.name} - ")
-            append("${jsoupPrice?.pricePrimary} - ")
+            append("${jsoupPrice?.cityId}")
+            append("${jsoupPrice?.priceDate}")
+            append("${jsoupPrice?.name}")
+            append("${jsoupPrice?.pricePrimary}")
             append("${jsoupPrice?.priceSecondary}")
             this.toString().trim().lowercase()
                 .replace("/", "")
@@ -71,12 +72,41 @@ abstract class BasePriceRepository {
         }
     }
 
+    private fun getDatePrimaryId(date: String, cityId: String): String {
+        return StringBuilder().run {
+            append(date)
+            append(cityId)
+            this.toString().trim().lowercase()
+                .replace("/", "")
+                .replace("-", "")
+                .replace(" ", "")
+        }
+    }
+
+    private suspend fun insertDate(date: String, cityId: String, lastUpdatedTime: Long): HttpResponse{
+        val primaryDateId = getDatePrimaryId(date, cityId)
+        val dateEntry = Write(
+            update = Update(
+                fields = PriceDateFields(
+                    date = PriceDate(date),
+                    cityId = CityId(cityId),
+                    lastUpdatedTime = LastUpdatedTime(lastUpdatedTime)
+                ),
+                name = "projects/$FIRESTORE_DATABASE_ID/databases/(default)/documents/price_dates/${primaryDateId}"
+            )
+        )
+        return client.post {
+            url("https://firestore.googleapis.com/v1beta1/projects/$FIRESTORE_DATABASE_ID/databases/(default)/documents:commit")
+            contentType(ContentType.Application.Json)
+            setBody(Gson().toJson(FirestoreDto(writes = listOf(dateEntry))))
+        }
+    }
+
     private suspend fun insertPrices(list: List<PriceDto>): HttpResponse {
-        val client = HttpClient(CIO)
         val prices = list.map {
             Write(
                 update = Update(
-                    fields = Fields(
+                    fields = PriceFields(
                         cityId = CityId(it.cityId ?: ""),
                         icon = Icon(it.icon ?: ""),
                         id = Id(it.id ?: ""),
@@ -91,10 +121,13 @@ abstract class BasePriceRepository {
                 )
             )
         }
+        val firstPrice = list.first()
+        if (firstPrice.priceDate != null && firstPrice.cityId != null && firstPrice.lastUpdatedTime != null)
+            insertDate(date = firstPrice.priceDate, cityId = firstPrice.cityId, lastUpdatedTime = firstPrice.lastUpdatedTime)
         return client.post {
             url("https://firestore.googleapis.com/v1beta1/projects/$FIRESTORE_DATABASE_ID/databases/(default)/documents:commit")
             contentType(ContentType.Application.Json)
-            setBody(Gson().toJson(FirestorePriceDto(writes = prices)))
+            setBody(Gson().toJson(FirestoreDto(writes = prices)))
         }
     }
 }
