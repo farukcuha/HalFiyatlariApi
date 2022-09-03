@@ -1,6 +1,4 @@
-package com.pandorina.domain.model.jsoup
-
-import kotlinx.serialization.Serializable
+package com.pandorina.domain.model
 
 data class JsoupPrice(
     val cityId: String? = null,

@@ -7,7 +7,8 @@ import kotlinx.coroutines.*
 fun main(args: Array<String>): Unit =
     io.ktor.server.netty.EngineMain.main(args)
 
-@OptIn(DelicateCoroutinesApi::class)
+const val BASE_URL = "http://halfiyatlariapi-env-2.eba-dht3rpjn.us-east-1.elasticbeanstalk.com"
+
 @Suppress("unused") // application.conf references the main function. This annotation prevents the IDE from marking it as unused.
 fun Application.module() {
     configureRouting()

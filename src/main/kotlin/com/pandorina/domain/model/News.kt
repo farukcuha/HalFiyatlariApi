@@ -1,4 +1,4 @@
-package com.pandorina.domain.model.core
+package com.pandorina.domain.model
 
 @kotlinx.serialization.Serializable
 data class News(

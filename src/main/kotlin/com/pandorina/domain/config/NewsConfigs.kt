@@ -2,7 +2,6 @@ package com.pandorina.domain.config
 
 
 const val URL_SON_DAKIKA = "https://www.sondakika.com"
-
 @kotlinx.serialization.Serializable
 data class NewsConfigModel(
     val id: Int,
@@ -50,4 +49,11 @@ sealed class NewsConfig(
         title = "Yerel",
         srcUrl = "$URL_SON_DAKIKA/yerel"
     )
+    fun toNewsConfigModel(): NewsConfigModel{
+        return NewsConfigModel(
+            id = id,
+            title = title,
+            srcUrl = srcUrl
+        )
+    }
 }

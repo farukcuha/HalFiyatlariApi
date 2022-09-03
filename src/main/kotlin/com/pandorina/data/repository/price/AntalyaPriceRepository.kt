@@ -1,6 +1,6 @@
 package com.pandorina.data.repository.price
 
-import com.pandorina.domain.model.jsoup.JsoupPrice
+import com.pandorina.domain.model.JsoupPrice
 import com.pandorina.data.remote.HtmlFetcher
 import com.pandorina.domain.config.CityConfig
 import com.pandorina.domain.model.SyncResponse

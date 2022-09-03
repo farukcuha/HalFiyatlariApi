@@ -1,11 +1,10 @@
 package com.pandorina.data.repository.price
 
 import com.google.gson.Gson
-import com.pandorina.domain.model.jsoup.JsoupPrice
 import com.pandorina.data.remote.JsoupResult
 import com.pandorina.data.remote.collectJsoupResult
-import com.pandorina.domain.model.SyncResponse
-import com.pandorina.domain.model.dto.*
+import com.pandorina.domain.model.*
+import com.pandorina.domain.model.firebase.*
 import io.ktor.client.*
 import io.ktor.client.call.*
 import io.ktor.client.engine.cio.*
@@ -13,7 +12,6 @@ import io.ktor.client.request.*
 import io.ktor.client.statement.*
 import io.ktor.http.*
 import kotlinx.coroutines.flow.Flow
-import org.jetbrains.exposed.sql.*
 
 abstract class BasePriceRepository {
     companion object {
@@ -29,7 +27,7 @@ abstract class BasePriceRepository {
             onSuccess = { list ->
                 val time = System.currentTimeMillis()
                 list?.map {
-                    PriceDto(
+                    Price(
                         id = getPricePrimaryId(it),
                         cityId = it.cityId,
                         priceDate = it.priceDate,
@@ -102,7 +100,7 @@ abstract class BasePriceRepository {
         }
     }
 
-    private suspend fun insertPrices(list: List<PriceDto>): HttpResponse {
+    private suspend fun insertPrices(list: List<Price>): HttpResponse {
         val prices = list.map {
             Write(
                 update = Update(

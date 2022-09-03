@@ -1,4 +1,4 @@
-package com.pandorina.domain.model.dto
+package com.pandorina.domain.model.firebase
 
 data class PriceFields(
     val cityId: CityId,
