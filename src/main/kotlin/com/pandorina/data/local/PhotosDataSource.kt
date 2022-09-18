@@ -11,7 +11,6 @@ data class Photo(
 )
 
 object PhotosDataSource{
-
     val photos = listOf(
         Photo(
             "$BASE_PHOTOS_URL/adrasan_meydan-kumluca.jpg",
@@ -50,7 +49,7 @@ object PhotosDataSource{
             "Cape Galedonya / Kumluca"
         ),
         Photo(
-            "$BASE_PHOTOS_URL/coast_antalya.jpg",
+            "$BASE_PHOTOS_URL/coast_alanya.jpg",
             "Alanya Sahili / Alanya"
         ),
         Photo(

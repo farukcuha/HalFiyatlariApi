@@ -19,6 +19,9 @@ fun Application.configureRouting() {
             syncRouting()
             syncAllRouting()
             getCities()
+            datesRouting()
+            fetchRouting()
+            deleteRouting()
         }
         route("/news"){
             categoryRouting()
