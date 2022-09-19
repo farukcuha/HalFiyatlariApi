@@ -8,7 +8,6 @@ plugins {
     application
     kotlin("jvm") version "1.7.0"
     id("org.jetbrains.kotlin.plugin.serialization") version "1.7.0"
-    id("io.ktor.plugin") version "2.1.0"
 }
 
 group = "com.example"
@@ -22,8 +21,10 @@ application {
 
 repositories {
     mavenCentral()
-    mavenLocal()
     maven { url = uri("https://maven.pkg.jetbrains.space/public/p/ktor/eap") }
+    maven {
+        url = uri("https://maven.google.com")
+    }
 }
 
 tasks.create("stage") {
