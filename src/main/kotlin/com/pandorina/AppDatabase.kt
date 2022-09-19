@@ -16,6 +16,8 @@ object AppDatabase {
         val config = HikariConfig()
         config.driverClassName = "org.postgresql.Driver"
         config.jdbcUrl = System.getenv("DATABASE_URL")
+        config.username = System.getenv("USER_NAME")
+        config.password = System.getenv("PASSWORD")
         config.maximumPoolSize = 3
         config.isAutoCommit = false
         config.transactionIsolation = "TRANSACTION_REPEATABLE_READ"
