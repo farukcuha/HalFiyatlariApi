@@ -6,8 +6,8 @@ val jsoupVersion: String by project
 
 plugins {
     application
-    kotlin("jvm") version "1.7.0"
-                id("org.jetbrains.kotlin.plugin.serialization") version "1.7.0"
+    kotlin("jvm") version "1.6.21"
+    id("org.jetbrains.kotlin.plugin.serialization") version "1.6.21"
     id("io.ktor.plugin") version "2.1.0"
 }
 
