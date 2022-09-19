@@ -12,7 +12,6 @@ import io.ktor.server.response.*
 import io.ktor.server.routing.*
 
 fun Application.configureRouting() {
-    PricesDataSource.connect()
     routing {
         get {
             return@get call.respond("Welcome to HalFiyatlari server!")
