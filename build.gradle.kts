@@ -36,7 +36,7 @@ dependencies {
     implementation("ch.qos.logback:logback-classic:$logback_version")
     testImplementation("io.ktor:ktor-server-tests-jvm:$ktor_version")
     testImplementation("org.jetbrains.kotlin:kotlin-test-junit:$kotlin_version")
-    implementation("org.postgresql:postgresql:42.2.18")
+    implementation("org.postgresql:postgresql:42.2.16")
     implementation("com.zaxxer:HikariCP:4.0.3")
 
     implementation("org.jetbrains.exposed:exposed-core:$exposedVersion")
