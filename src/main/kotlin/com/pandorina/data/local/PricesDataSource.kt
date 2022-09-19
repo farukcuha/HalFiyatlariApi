@@ -13,6 +13,16 @@ import java.time.LocalTime
 import java.time.ZoneOffset
 
 object PricesDataSource {
+    fun connect(){
+        Database
+            .connect(System.getenv("DATABASE_URL"),
+                driver = "org.postgresql.Driver",
+                user = System.getenv("DATABASE_USER_NAME"),
+                password = System.getenv("DATABASE_USER_PASSWORD"))
+        transaction {
+            SchemaUtils.create(PriceTable)
+        }
+    }
     fun getPriceDates(cityId: String?): List<String?>{
         return transaction {
             PriceTable

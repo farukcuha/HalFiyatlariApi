@@ -1,5 +1,6 @@
 package com.pandorina.plugins
 
+import com.pandorina.data.local.PricesDataSource
 import com.pandorina.presentation.currency.currenciesRouting
 import com.pandorina.presentation.news.categoryRouting
 import com.pandorina.presentation.news.newsRouting
@@ -11,6 +12,7 @@ import io.ktor.server.response.*
 import io.ktor.server.routing.*
 
 fun Application.configureRouting() {
+    PricesDataSource.connect()
     routing {
         get {
             return@get call.respond("Welcome to HalFiyatlari server!")
