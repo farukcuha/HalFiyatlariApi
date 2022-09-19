@@ -22,7 +22,7 @@ fun Application.module() {
             driver = "org.postgresql.Driver",
             user = appConfig.property("jdbc.username").getString(),
             password = appConfig.property("jdbc.password").getString())*/
-    AppDatabase.init()
+    //AppDatabase.init()
     /*transaction {
         SchemaUtils.create(PriceTable)
     }*/
