@@ -1,10 +1,11 @@
 package com.pandorina.data.local
 
+import com.pandorina.data.local.PriceTable.nullable
 import org.jetbrains.exposed.sql.Column
 import org.jetbrains.exposed.sql.Table
 
 object PriceTable: Table() {
-    val id: Column<String> = varchar("id", 100)
+    val id: Column<String?> = varchar("id", 100).nullable()
     val cityId: Column<String?> = varchar("city_id", 100).nullable()
     val priceDate: Column<String?> = varchar("price_date", 100).nullable()
     val lastUpdatedTime: Column<Long?> = long("last_updated_time").nullable()
