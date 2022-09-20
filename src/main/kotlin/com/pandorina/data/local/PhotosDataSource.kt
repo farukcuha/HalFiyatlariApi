@@ -2,7 +2,7 @@ package com.pandorina.data.local
 
 import com.pandorina.BASE_URL
 
-const val BASE_PHOTOS_URL = "$BASE_URL/photos"
+val BASE_PHOTOS_URL = "$BASE_URL/photos"
 
 @kotlinx.serialization.Serializable
 data class Photo(

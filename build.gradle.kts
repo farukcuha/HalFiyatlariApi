@@ -8,6 +8,7 @@ plugins {
     application
     kotlin("jvm") version "1.7.0"
     id("org.jetbrains.kotlin.plugin.serialization") version "1.7.0"
+    id("io.ktor.plugin") version "2.1.0"
 }
 
 group = "com.example"
@@ -37,7 +38,6 @@ dependencies {
     testImplementation("io.ktor:ktor-server-tests-jvm:$ktor_version")
     testImplementation("org.jetbrains.kotlin:kotlin-test-junit:$kotlin_version")
     implementation("org.postgresql:postgresql:42.2.16")
-    implementation("mysql:mysql-connector-java:8.0.19")
     implementation("com.zaxxer:HikariCP:4.0.3")
 
     implementation("org.jetbrains.exposed:exposed-core:$exposedVersion")

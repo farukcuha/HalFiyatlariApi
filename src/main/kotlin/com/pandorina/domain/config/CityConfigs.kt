@@ -3,7 +3,7 @@ package com.pandorina.domain.config
 import com.pandorina.BASE_URL
 
 const val URL_GUNCEL_HAL_FIYATLAR = "https://www.guncelfiyatlari.com"
-const val BASE_CITIES_IMAGE_URL = "${BASE_URL}/cities"
+val BASE_CITIES_IMAGE_URL = "${BASE_URL}/cities"
 @kotlinx.serialization.Serializable
 data class CityConfigModel(
     val id: String,
