@@ -11,6 +11,7 @@ val BASE_URL: String = System.getenv("BASE_URL")
 @Suppress("unused") // application.conf references the main function. This annotation prevents the IDE from marking it as unused.
 fun Application.module() {
     AppDatabase.init()
+    configureAuthentication()
     configureRouting()
     configureSerialization()
 }

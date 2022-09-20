@@ -14,13 +14,12 @@ object AppDatabase {
             SchemaUtils.create(PriceTable)
         }
     }
-
     private fun hikari(): HikariDataSource {
         val config = HikariConfig()
-        config.driverClassName = System.getenv("DRIVER")
+        config.driverClassName = System.getenv("DATABASE_DRIVER")
         config.jdbcUrl = System.getenv("DATABASE_URL")
-        config.username = System.getenv("USER_NAME")
-        config.password = System.getenv("PASSWORD")
+        config.username = System.getenv("DATABASE_USERNAME")
+        config.password = System.getenv("DATABASE_PASSWORD")
         config.maximumPoolSize = 3
         config.isAutoCommit = false
         config.transactionIsolation = "TRANSACTION_REPEATABLE_READ"

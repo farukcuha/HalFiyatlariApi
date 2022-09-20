@@ -8,7 +8,7 @@ plugins {
     application
     kotlin("jvm") version "1.7.0"
     id("org.jetbrains.kotlin.plugin.serialization") version "1.7.0"
-    //id("io.ktor.plugin") version "2.0.2"
+    id("io.ktor.plugin") version "2.1.0"
 }
 
 group = "com.example"
@@ -37,6 +37,7 @@ dependencies {
     implementation("ch.qos.logback:logback-classic:$logback_version")
     testImplementation("io.ktor:ktor-server-tests-jvm:$ktor_version")
     testImplementation("org.jetbrains.kotlin:kotlin-test-junit:$kotlin_version")
+    implementation("io.ktor:ktor-server-auth:$ktor_version")
     implementation("org.postgresql:postgresql:42.2.16")
     implementation("com.zaxxer:HikariCP:4.0.3")
 
