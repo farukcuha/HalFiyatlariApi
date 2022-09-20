@@ -9,13 +9,13 @@ import javax.sql.DataSource
 
 object AppDatabase {
     fun init() {
-        /*Database.connect(
+        Database.connect(
             url = System.getenv("DATABASE_URL"),
             driver = System.getenv("DRIVER"),
             user = System.getenv("USER_NAME"),
             password = System.getenv("PASSWORD")
-        )*/
-        Database.connect(hikari())
+        )
+        //Database.connect(hikari())
     }
 
     private fun hikari(): HikariDataSource {
