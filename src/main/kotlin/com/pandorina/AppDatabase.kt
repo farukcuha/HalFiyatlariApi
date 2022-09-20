@@ -1,10 +1,13 @@
 package com.pandorina
 
+import com.pandorina.data.local.PriceTable
 import com.typesafe.config.ConfigFactory
 import com.zaxxer.hikari.HikariConfig
 import com.zaxxer.hikari.HikariDataSource
 import io.ktor.server.config.*
 import org.jetbrains.exposed.sql.Database
+import org.jetbrains.exposed.sql.SchemaUtils
+import org.jetbrains.exposed.sql.transactions.transaction
 import javax.sql.DataSource
 
 object AppDatabase {
@@ -16,6 +19,9 @@ object AppDatabase {
             password = System.getenv("PASSWORD")
         )*/
         Database.connect(hikari())
+        transaction {
+            SchemaUtils.create(PriceTable)
+        }
     }
 
     private fun hikari(): HikariDataSource {
