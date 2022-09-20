@@ -9,7 +9,13 @@ import javax.sql.DataSource
 
 object AppDatabase {
     fun init() {
-        Database.connect(hikari())
+        Database.connect(
+            url = System.getenv("DATABASE_URL"),
+            driver = "org.postgresql.Driver",
+            user = System.getenv("USER_NAME"),
+            password = System.getenv("PASSWORD")
+        )
+        //Database.connect(hikari())
     }
 
     private fun hikari(): HikariDataSource {
