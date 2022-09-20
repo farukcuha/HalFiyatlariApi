@@ -9,18 +9,18 @@ import javax.sql.DataSource
 
 object AppDatabase {
     fun init() {
-        Database.connect(
+        /*Database.connect(
             url = System.getenv("DATABASE_URL"),
-            driver = "org.postgresql.Driver",
+            driver = System.getenv("DRIVER"),
             user = System.getenv("USER_NAME"),
             password = System.getenv("PASSWORD")
-        )
-        //Database.connect(hikari())
+        )*/
+        Database.connect(hikari())
     }
 
     private fun hikari(): HikariDataSource {
         val config = HikariConfig()
-        config.driverClassName = "org.postgresql.Driver"
+        config.driverClassName = System.getenv("DRIVER")
         config.jdbcUrl = System.getenv("DATABASE_URL")
         config.username = System.getenv("USER_NAME")
         config.password = System.getenv("PASSWORD")

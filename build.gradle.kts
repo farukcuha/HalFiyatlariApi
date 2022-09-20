@@ -37,6 +37,7 @@ dependencies {
     testImplementation("io.ktor:ktor-server-tests-jvm:$ktor_version")
     testImplementation("org.jetbrains.kotlin:kotlin-test-junit:$kotlin_version")
     implementation("org.postgresql:postgresql:42.2.16")
+    implementation("mysql:mysql-connector-java:8.0.19")
     implementation("com.zaxxer:HikariCP:4.0.3")
 
     implementation("org.jetbrains.exposed:exposed-core:$exposedVersion")

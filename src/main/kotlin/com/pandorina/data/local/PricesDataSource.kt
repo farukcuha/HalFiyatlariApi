@@ -56,7 +56,7 @@ object PricesDataSource {
     fun isPriceExist(priceId: String?): Boolean{
         return transaction {
             !PriceTable.select {
-                PriceTable.id eq priceId
+                PriceTable.id eq priceId!!
             }.empty()
         }
     }

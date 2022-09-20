@@ -1,7 +1,10 @@
 package com.pandorina
 
+import com.pandorina.data.local.PriceTable
 import io.ktor.server.application.*
 import com.pandorina.plugins.*
+import org.jetbrains.exposed.sql.SchemaUtils
+import org.jetbrains.exposed.sql.transactions.transaction
 
 fun main(args: Array<String>): Unit =
     io.ktor.server.netty.EngineMain.main(args)
@@ -17,9 +20,6 @@ fun Application.module() {
             user = appConfig.property("jdbc.username").getString(),
             password = appConfig.property("jdbc.password").getString())*/
     AppDatabase.init()
-    /*transaction {
-        SchemaUtils.create(PriceTable)
-    }*/
     configureRouting()
     configureSerialization()
 }
