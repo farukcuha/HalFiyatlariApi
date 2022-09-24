@@ -1,4 +1,4 @@
-package com.pandorina.data.local
+package com.pandorina.data.local.news
 
 import com.pandorina.domain.config.*
 

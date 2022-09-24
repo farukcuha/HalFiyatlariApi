@@ -1,7 +1,8 @@
 package com.pandorina.data.repository.price
 
-import com.pandorina.data.local.PriceTable
-import com.pandorina.data.local.PricesDataSource
+import com.pandorina.data.local.city.CitiesDataSource
+import com.pandorina.data.local.price.PriceTable
+import com.pandorina.data.local.price.PricesDataSource
 import com.pandorina.data.remote.JsoupResult
 import com.pandorina.data.remote.collectJsoupResult
 import com.pandorina.domain.model.*
@@ -12,7 +13,6 @@ import org.jetbrains.exposed.sql.insert
 import org.jetbrains.exposed.sql.transactions.transaction
 
 abstract class BasePriceRepository {
-
     abstract suspend fun syncPrices(): SyncResponse?
 
     suspend fun Flow<JsoupResult<List<JsoupPrice>>>.saveToDatabase(): SyncResponse?{

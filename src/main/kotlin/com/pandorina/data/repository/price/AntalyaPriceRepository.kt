@@ -2,14 +2,16 @@ package com.pandorina.data.repository.price
 
 import com.pandorina.domain.model.JsoupPrice
 import com.pandorina.data.remote.HtmlFetcher
-import com.pandorina.domain.config.CityConfig
 import com.pandorina.domain.model.SyncResponse
 
 class AntalyaPriceRepository: BasePriceRepository() {
-
+    companion object{
+        const val cityId = "antalya"
+        const val srcUrl = "https://www.guncelfiyatlari.com/antalya-hal-fiyatlari"
+    }
     override suspend fun syncPrices(): SyncResponse? {
         return HtmlFetcher<List<JsoupPrice>>(
-            url = CityConfig.Antalya.srcUrl,
+            url = srcUrl,
             parseHtml = { jsoup ->
                 mutableListOf<JsoupPrice>().apply {
                     val elements = jsoup.select("table > tbody > tr")
@@ -23,7 +25,7 @@ class AntalyaPriceRepository: BasePriceRepository() {
                         val highPrice = row.getOrNull(3)?.text()
                         add(
                             JsoupPrice(
-                                cityId = CityConfig.Antalya.id,
+                                cityId = cityId,
                                 priceDate = date,
                                 name = name,
                                 icon = icon,

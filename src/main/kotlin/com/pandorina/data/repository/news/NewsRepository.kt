@@ -1,6 +1,6 @@
 package com.pandorina.data.repository.news
 
-import com.pandorina.data.local.NewsDataSource
+import com.pandorina.data.local.news.NewsDataSource
 import com.pandorina.domain.model.News
 import com.pandorina.data.remote.HtmlFetcher
 import com.pandorina.data.remote.JsoupResult

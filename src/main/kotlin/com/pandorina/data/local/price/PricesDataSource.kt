@@ -1,14 +1,8 @@
-package com.pandorina.data.local
+package com.pandorina.data.local.price
 
-import com.pandorina.data.local.CitiesDataSource.cities
-import com.pandorina.data.local.PriceTable.cityId
 import com.pandorina.domain.model.Price
 import com.pandorina.domain.model.PriceFetchResponse
-import com.typesafe.config.ConfigFactory
-import io.ktor.server.config.*
 import org.jetbrains.exposed.sql.*
-import org.jetbrains.exposed.sql.SqlExpressionBuilder.greaterEq
-import org.jetbrains.exposed.sql.transactions.TransactionManager
 import org.jetbrains.exposed.sql.transactions.transaction
 import java.time.LocalDate
 import java.time.LocalDateTime
@@ -39,7 +33,6 @@ object PricesDataSource {
             }
             PriceFetchResponse(
                 cityId = cityId,
-                title = getCityTitleByCityId(cityId),
                 date = date,
                 size = prices.size,
                 prices = prices
@@ -47,11 +40,6 @@ object PricesDataSource {
         }
     }
 
-    private fun getCityTitleByCityId(cityId: String?): String?{
-        return cities.find {
-            it.id == cityId
-        }?.title
-    }
 
     fun isPriceExist(priceId: String?): Boolean{
         return transaction {

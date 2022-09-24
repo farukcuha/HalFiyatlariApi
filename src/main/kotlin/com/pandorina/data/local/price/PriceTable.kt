@@ -1,6 +1,5 @@
-package com.pandorina.data.local
+package com.pandorina.data.local.price
 
-import com.pandorina.data.local.PriceTable.nullable
 import org.jetbrains.exposed.sql.Column
 import org.jetbrains.exposed.sql.Table
 

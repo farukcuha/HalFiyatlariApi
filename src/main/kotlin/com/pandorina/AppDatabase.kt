@@ -1,10 +1,14 @@
 package com.pandorina
 
-import com.pandorina.data.local.PriceTable
+import com.pandorina.data.local.city.CityTable
+import com.pandorina.data.local.photo.PhotosDataSource
+import com.pandorina.data.local.photo.PhotosTable
+import com.pandorina.data.local.price.PriceTable
 import com.zaxxer.hikari.HikariConfig
 import com.zaxxer.hikari.HikariDataSource
 import org.jetbrains.exposed.sql.Database
 import org.jetbrains.exposed.sql.SchemaUtils
+import org.jetbrains.exposed.sql.insert
 import org.jetbrains.exposed.sql.transactions.transaction
 
 object AppDatabase {
@@ -12,6 +16,8 @@ object AppDatabase {
         Database.connect(hikari())
         transaction {
             SchemaUtils.create(PriceTable)
+            SchemaUtils.create(PhotosTable)
+            SchemaUtils.create(CityTable)
         }
     }
     private fun hikari(): HikariDataSource {

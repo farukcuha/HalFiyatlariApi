@@ -1,6 +1,6 @@
 package com.pandorina.presentation.prices
 
-import com.pandorina.data.local.PricesDataSource
+import com.pandorina.data.local.price.PricesDataSource
 import io.ktor.http.*
 import io.ktor.server.application.*
 import io.ktor.server.response.*
