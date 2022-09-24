@@ -5,13 +5,14 @@ import com.pandorina.domain.model.City
 import org.jetbrains.exposed.sql.ResultRow
 import org.jetbrains.exposed.sql.SortOrder
 import org.jetbrains.exposed.sql.select
-import org.jetbrains.exposed.sql.selectAll
 import org.jetbrains.exposed.sql.transactions.transaction
 
 object CitiesDataSource {
     fun getCities(): List<City> {
         return transaction {
-            CityTable.selectAll()
+            CityTable.select {
+                CityTable.isActive eq true
+            }
                 .orderBy(CityTable.priority, SortOrder.DESC)
                 .map { it.toCity() }
         }
