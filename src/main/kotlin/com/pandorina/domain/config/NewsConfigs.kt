@@ -8,7 +8,6 @@ data class NewsConfigModel(
     val title: String,
     val srcUrl: String,
 )
-
 sealed class NewsConfig(
     val id: Int,
     val title: String,
