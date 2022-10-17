@@ -30,7 +30,9 @@ abstract class BasePriceRepository {
                             )
                         } else {
                             val time = System.currentTimeMillis()
-                            list?.forEach { price ->
+                            list?.distinctBy {
+                                primaryIdGenerator(it)
+                            }?.forEach { price ->
                                 PriceTable.insert {
                                     it[id] = primaryIdGenerator(price)
                                     it[cityId] = price.cityId

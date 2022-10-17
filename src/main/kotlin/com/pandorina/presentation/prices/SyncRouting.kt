@@ -16,6 +16,21 @@ fun Route.syncRouting(){
                 message = "Missing city id!"
             )
         val result: SyncResponse? = when (cityId) {
+            AnkaraPriceRepository.cityId -> {
+                AnkaraPriceRepository().syncPrices()
+            }
+            TrabzonPriceRepository.cityId -> {
+                TrabzonPriceRepository().syncPrices()
+            }
+            AdanaHalFiyatları.cityId -> {
+                AdanaHalFiyatları().syncPrices()
+            }
+            DenizliPriceRepository.cityId -> {
+                DenizliPriceRepository().syncPrices()
+            }
+            KonyaPriceRepository.cityId -> {
+                KonyaPriceRepository().syncPrices()
+            }
             KumlucaPriceRepository.cityId -> {
                 KumlucaPriceRepository().syncPrices()
             }

@@ -57,7 +57,15 @@ object PricesDataSource {
             ).toInstant(ZoneOffset.UTC).toEpochMilli()
 
             PriceTable.deleteWhere {
-                PriceTable.lastUpdatedTime less targetTime
+                (PriceTable.lastUpdatedTime less targetTime)
+            }
+        }
+    }
+
+    fun deletePricesByCity(cityId: String){
+        transaction {
+            PriceTable.deleteWhere {
+                PriceTable.cityId eq cityId
             }
         }
     }

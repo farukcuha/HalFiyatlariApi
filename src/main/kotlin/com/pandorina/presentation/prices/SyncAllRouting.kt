@@ -33,6 +33,21 @@ fun Route.syncAllRouting(){
         IstanbulPriceRepository().syncPrices()?.let {
             if (it.statusCode != 200) return@post call.respond("İstanbul sync is failed!")
         }
+        AnkaraPriceRepository().syncPrices()?.let {
+            if (it.statusCode != 200) return@post call.respond("Ankara sync is failed!")
+        }
+        TrabzonPriceRepository().syncPrices()?.let {
+            if (it.statusCode != 200) return@post call.respond("Trabzon sync is failed!")
+        }
+        AdanaHalFiyatları().syncPrices()?.let {
+            if (it.statusCode != 200) return@post call.respond("Adana sync is failed!")
+        }
+        DenizliPriceRepository().syncPrices()?.let {
+            if (it.statusCode != 200) return@post call.respond("Denizli sync is failed!")
+        }
+        KonyaPriceRepository().syncPrices()?.let {
+            if (it.statusCode != 200) return@post call.respond("Konya sync is failed!")
+        }
         //BozyaziPriceRepository().syncPrices()?: return@post call.respond("Bozyazi sync is failed!")
         call.respond("Sync is successful!")
     }
