@@ -21,7 +21,7 @@ class KonyaPriceRepository: BasePriceRepository() {
                         val row = elements[i].select("td")
                         val name = row.getOrNull(0)?.text()
                         val lowPrice = row.getOrNull(1)?.text()
-                        val highPrice = row.getOrNull(3)?.text()
+                        val highPrice = row.getOrNull(2)?.text()
                         add(
                             JsoupPrice(
                                 cityId = cityId,
