@@ -8,34 +8,34 @@ class GazipasaPriceRepository : BasePriceRepository() {
 
     companion object{
         const val cityId = "gazipasa"
-        const val srcUrl = "https://www.guncelfiyatlari.com/gazipasa-hal-fiyatlari"
+        const val srcUrl = "https://gazipasa.bel.tr/hal-fiyatlari-32"
     }
     override suspend fun syncPrices(): SyncResponse? {
         return HtmlFetcher<List<JsoupPrice>>(
             url = srcUrl,
             parseHtml = { jsoup ->
                 mutableListOf<JsoupPrice>().apply {
-                    val elements = jsoup.select("table > tbody > tr")
-                    val date = elements[0].select("p").text()
-                    for (i in 2 until elements.size) {
+                    val elements = jsoup.select("tr")
+                    val date = jsoup.select("span[style=font-size: 28px;]").text()
+                    for (i in 0 until elements.size) {
                         val row = elements[i].select("td")
                         val name = row.getOrNull(0)?.text()
-                        val icon = row.select("img").attr("data-layzr")
                         val measure = row.getOrNull(1)?.text()
-                        val lowPrice = row.getOrNull(2)?.text()
-                        val highPrice = row.getOrNull(3)?.text()
+                        val price = row.getOrNull(3)?.text()
+                        if (name != null && measure != null && price != null)
                         add(
                             JsoupPrice(
                                 cityId = cityId,
                                 priceDate = date,
                                 name = name,
-                                icon = icon,
+                                icon = null,
                                 measure = measure,
-                                pricePrimary = lowPrice,
-                                priceSecondary = highPrice
+                                pricePrimary = price,
+                                priceSecondary = null
                             )
                         )
                     }
+                    removeAt(0)
                 }
             }
         ).invoke().saveToDatabase()
