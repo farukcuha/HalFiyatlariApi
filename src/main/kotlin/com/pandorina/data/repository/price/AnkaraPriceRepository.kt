@@ -25,6 +25,7 @@ class AnkaraPriceRepository: BasePriceRepository() {
                         val lowPrice = row.getOrNull(2)?.text()
                         val highPrice = row.getOrNull(3)?.text()
                         val date = row.getOrNull(4)?.text()
+                        if (name != null && measure != null && lowPrice != null && highPrice != null && date != null)
                         add(
                             JsoupPrice(
                                 cityId = cityId,
