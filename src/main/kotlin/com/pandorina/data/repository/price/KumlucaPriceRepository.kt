@@ -8,31 +8,29 @@ class KumlucaPriceRepository : BasePriceRepository() {
 
     companion object{
         const val cityId = "kumluca"
-        const val srcUrl = "https://www.guncelfiyatlari.com/kumluca-hal-fiyatlari"
+        const val srcUrl = "https://www.batiakdeniztv.com/kumluca-hal-fiyatlari-s5.html"
     }
     override suspend fun syncPrices(): SyncResponse? {
         return HtmlFetcher<List<JsoupPrice>>(
             url = srcUrl,
             parseHtml = { jsoup ->
                 mutableListOf<JsoupPrice>().apply {
-                    val elements = jsoup.select("table > tbody > tr")
-                    val date = elements[0].select("p").text()
-                    for (i in 2 until elements.size){
+                    val elements = jsoup.select("table[summary=Kumluca Hal Fiyatları] tr")
+                    val date = jsoup.select("table > tbody > tr > td > p > span[style=font-size:48px;] > strong").text()
+                    for (i in 0 until elements.size){
                         val row = elements[i].select("td")
-                        val name = row.getOrNull(0)?.text()
-                        val icon = row.select("img").attr("data-layzr")
-                        val measure = row.getOrNull(1)?.text()
-                        val lowPrice = row.getOrNull(2)?.text()
-                        val highPrice = row.getOrNull(3)?.text()
+                        val name = row.getOrNull(1)?.text()
+                        val price = row.getOrNull(2)?.text()
+                        if (name?.isNotEmpty() == true && price?.isNotEmpty() == true)
                         add(
                             JsoupPrice(
                                 cityId = cityId,
                                 priceDate = date,
                                 name = name,
-                                icon = icon,
-                                measure = measure,
-                                pricePrimary = lowPrice,
-                                priceSecondary = highPrice
+                                icon = null,
+                                measure = "Kilogram",
+                                pricePrimary = price,
+                                priceSecondary = null
                             )
                         )
                     }
