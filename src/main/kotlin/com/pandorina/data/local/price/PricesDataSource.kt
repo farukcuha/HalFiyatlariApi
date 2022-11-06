@@ -30,6 +30,8 @@ object PricesDataSource {
                 (PriceTable.cityId eq cityId) and (PriceTable.priceDate eq date)
             }.map {
                 it.toPrice()
+            }.distinctBy {
+                it.name
             }
             PriceFetchResponse(
                 cityId = cityId,
