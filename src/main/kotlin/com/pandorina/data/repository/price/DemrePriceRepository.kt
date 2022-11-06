@@ -19,6 +19,7 @@ class DemrePriceRepository() : BasePriceRepository() {
                     val date = jsoup.select("tr > td > p > span > b").text().replace("-", "")
                     for (i in 0 until elements.size) {
                         val row = elements[i].select("td")
+                        val icon = row.getOrNull(0)?.select("img")?.attr("src")
                         val name = row.getOrNull(1)?.text()
                         val price = row.getOrNull(2)?.text()
                         if (name?.isNotEmpty() == true && price?.isNotEmpty() == true)
@@ -27,7 +28,7 @@ class DemrePriceRepository() : BasePriceRepository() {
                                 cityId = cityId,
                                 priceDate = date,
                                 name = name,
-                                icon = null,
+                                icon = icon,
                                 measure = "Kilogram",
                                 pricePrimary = price,
                                 priceSecondary = null
