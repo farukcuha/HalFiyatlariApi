@@ -19,60 +19,66 @@ object AppDatabase {
             SchemaUtils.create(PhotosTable)
             SchemaUtils.create(CityTable)
         }
-        /*transaction {
+        /*val date = "14 Kasım 2022 Pazartesi"
+        val pricePatlican = "04.00₺"
+        val priceSalatalik = "06.00₺"
+        val priceFasulye = "12.00₺"
+        val priceKılbiber = "14.00₺"
+        val priceSivriBiber = "09.00₺"
+        transaction {
             PriceTable.insert {
-                it[id] = "5 Kasım 2022 Cumartesi - Patlıcan - 04.00₺"
+                it[id] = "$date - Patlıcan - $pricePatlican"
                 it[cityId] = "bozyazi"
-                it[priceDate] = "5 Kasım 2022 Cumartesi"
+                it[priceDate] = date
                 it[lastUpdatedTime] = System.currentTimeMillis()
                 it[name] = "Patlıcan"
                 it[icon] = "https://cdn-icons-png.flaticon.com/512/766/766026.png"
                 it[measure] = "Kilogram"
-                it[pricePrimary] = "04.00₺"
+                it[pricePrimary] = pricePatlican
                 it[priceSecondary] = null
             }
             PriceTable.insert {
-                it[id] = "5 Kasım 2022 Cumartesi - Salatalık - 06.00₺"
+                it[id] = "$date - Salatalık - $priceSalatalik"
                 it[cityId] = "bozyazi"
-                it[priceDate] = "5 Kasım 2022 Cumartesi"
+                it[priceDate] = date
                 it[lastUpdatedTime] = System.currentTimeMillis()
                 it[name] = "Salatalık"
                 it[icon] = "https://cdn-icons-png.flaticon.com/512/2346/2346905.png"
                 it[measure] = "Kilogram"
-                it[pricePrimary] = "06.00₺"
+                it[pricePrimary] = priceSalatalik
                 it[priceSecondary] = null
             }
             PriceTable.insert {
-                it[id] = "5 Kasım 2022 Cumartesi - Fasulye - 12.00₺"
+                it[id] = "$date - Fasulye - $priceFasulye"
                 it[cityId] = "bozyazi"
-                it[priceDate] = "5 Kasım 2022 Cumartesi"
+                it[priceDate] = date
                 it[lastUpdatedTime] = System.currentTimeMillis()
                 it[name] = "Fasulye"
                 it[icon] = "https://cdn1.iconfinder.com/data/icons/food-2-23/50/125-512.png"
                 it[measure] = "Kilogram"
-                it[pricePrimary] = "12.00₺"
+                it[pricePrimary] = priceFasulye
                 it[priceSecondary] = null
             }
             PriceTable.insert {
-                it[id] = "5 Kasım 2022 Cumartesi - Kıl Biber - 12.00₺"
+                it[id] = "$date - Kıl Biber - $priceSivriBiber"
                 it[cityId] = "bozyazi"
-                it[priceDate] = "5 Kasım 2022 Cumartesi"
+                it[priceDate] = date
                 it[lastUpdatedTime] = System.currentTimeMillis()
                 it[name] = "Kıl Biber"
                 it[icon] = "https://cdn-icons-png.flaticon.com/512/2909/2909883.png"
                 it[measure] = "Kilogram"
-                it[pricePrimary] = "12.00₺"
+                it[pricePrimary] = priceKılbiber
                 it[priceSecondary] = null
             }
             PriceTable.insert {
-                it[id] = "5 Kasım 2022 Cumartesi - Sivri Biber - 08.00"
+                it[id] = "$date - Sivri Biber - $priceKılbiber"
                 it[cityId] = "bozyazi"
-                it[priceDate] = "5 Kasım 2022 Cumartesi"
+                it[priceDate] = date
                 it[lastUpdatedTime] = System.currentTimeMillis()
                 it[name] = "Sivri Biber"
                 it[icon] = "https://cdn-icons-png.flaticon.com/512/2909/2909883.png"
                 it[measure] = "Kilogram"
-                it[pricePrimary] = "08.00₺"
+                it[pricePrimary] = priceSivriBiber
                 it[priceSecondary] = null
             }
         }*/

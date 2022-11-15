@@ -18,9 +18,9 @@ fun Route.syncAllRouting(){
         FinikePriceRepository().syncPrices()?.let {
             if (it.statusCode != 200) return@post call.respond("Finike sync is failed!")
         }
-        AlanyaPriceRepository().syncPrices()?.let {
+        /*AlanyaPriceRepository().syncPrices()?.let {
             if (it.statusCode != 200) return@post call.respond("Alanya sync is failed!")
-        }
+        }*/
         SerikPriceRepository().syncPrices()?.let {
             if (it.statusCode != 200) return@post call.respond("Serik sync is failed!")
         }
@@ -30,9 +30,9 @@ fun Route.syncAllRouting(){
         AntalyaPriceRepository().syncPrices()?.let {
             if (it.statusCode != 200) return@post call.respond("Antalya sync is failed!")
         }
-        IstanbulPriceRepository().syncPrices()?.let {
+        /*IstanbulPriceRepository().syncPrices()?.let {
             if (it.statusCode != 200) return@post call.respond("İstanbul sync is failed!")
-        }
+        }*/
         AnkaraPriceRepository().syncPrices()?.let {
             if (it.statusCode != 200) return@post call.respond("Ankara sync is failed!")
         }

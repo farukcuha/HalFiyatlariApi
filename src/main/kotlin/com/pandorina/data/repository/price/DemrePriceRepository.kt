@@ -15,7 +15,7 @@ class DemrePriceRepository() : BasePriceRepository() {
             url = srcUrl,
             parseHtml = { jsoup ->
                 mutableListOf<JsoupPrice>().apply {
-                    val elements = jsoup.select("table[style=width:333px;] tr")
+                    val elements = jsoup.select("table[style=width:366px;] tr")
                     val date = jsoup.select("tr > td > p > span > b").text().replace("-", "")
                     for (i in 0 until elements.size) {
                         val row = elements[i].select("td")
