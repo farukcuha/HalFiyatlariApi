@@ -22,6 +22,7 @@ fun Application.configureRouting() {
             datesRouting()
             fetchRouting()
             deleteRouting()
+            manualEntryRouting()
         }
         route("/news"){
             categoryRouting()

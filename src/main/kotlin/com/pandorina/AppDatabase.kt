@@ -19,11 +19,11 @@ object AppDatabase {
             SchemaUtils.create(PhotosTable)
             SchemaUtils.create(CityTable)
         }
-        /*val date = "14 Kasım 2022 Pazartesi"
-        val pricePatlican = "04.00₺"
-        val priceSalatalik = "06.00₺"
-        val priceFasulye = "12.00₺"
-        val priceKılbiber = "14.00₺"
+        /*val date = "28 Kasım 2022 Pazartesi"
+        val pricePatlican = "05.00₺"
+        val priceSalatalik = "04.00₺"
+        val priceFasulye = "13.00₺"
+        val priceKılbiber = "15.00₺"
         val priceSivriBiber = "09.00₺"
         transaction {
             PriceTable.insert {
@@ -60,7 +60,7 @@ object AppDatabase {
                 it[priceSecondary] = null
             }
             PriceTable.insert {
-                it[id] = "$date - Kıl Biber - $priceSivriBiber"
+                it[id] = "$date - Kıl Biber - $priceKılbiber"
                 it[cityId] = "bozyazi"
                 it[priceDate] = date
                 it[lastUpdatedTime] = System.currentTimeMillis()
@@ -71,7 +71,7 @@ object AppDatabase {
                 it[priceSecondary] = null
             }
             PriceTable.insert {
-                it[id] = "$date - Sivri Biber - $priceKılbiber"
+                it[id] = "$date - Sivri Biber - $priceSivriBiber"
                 it[cityId] = "bozyazi"
                 it[priceDate] = date
                 it[lastUpdatedTime] = System.currentTimeMillis()
