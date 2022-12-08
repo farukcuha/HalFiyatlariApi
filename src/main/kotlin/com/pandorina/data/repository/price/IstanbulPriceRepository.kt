@@ -16,11 +16,10 @@ class IstanbulPriceRepository: BasePriceRepository() {
             parseHtml = { jsoup ->
                 mutableListOf<JsoupPrice>().apply {
                     val elements = jsoup.select("tr[style=height: 40px;]")
-                    val date = jsoup.select("div > table > thead > tr > td > p").first()?.text()
+                    val date = jsoup.select("p > span > strong > span").first()?.text()
                     for (i in 0 until elements.size){
                         val row = elements[i].select("td")
                         val name = row.getOrNull(0)?.text()
-                        val icon = row.select("img").attr("data-layzr")
                         val measure = row.getOrNull(1)?.text()
                         val lowPrice = row.getOrNull(2)?.text()
                         val highPrice = row.getOrNull(3)?.text()
@@ -29,7 +28,7 @@ class IstanbulPriceRepository: BasePriceRepository() {
                                 cityId = cityId,
                                 priceDate = date,
                                 name = name,
-                                icon = icon,
+                                icon = null,
                                 measure = measure,
                                 pricePrimary = lowPrice,
                                 priceSecondary = highPrice

@@ -21,7 +21,7 @@ val bozyaziFields = arrayOf(
 )
 
 @kotlinx.serialization.Serializable
-data class IncomingPrices(
+data class IncomingPricesRequest(
     val time: Long = System.currentTimeMillis(),
     val values: List<Float>
 )
@@ -34,7 +34,7 @@ fun Route.manualEntryRouting(){
             })
         }
         post("/bozyazi") {
-            val incomingPrices = call.receive<IncomingPrices>()
+            val incomingPrices = call.receive<IncomingPricesRequest>()
             val date = SimpleDateFormat("dd MMMM yyyy EEEE", Locale("tr"))
                 .format(incomingPrices.time)
             var message = ""
