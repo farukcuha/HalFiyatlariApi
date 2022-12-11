@@ -21,7 +21,7 @@ class NewsRepository(
             url = url,
             parseHtml = { document ->
                 mutableListOf<News>().apply {
-                    document.select("li[class=nws]").take(30).forEach { element ->
+                    document.select("li[class=nws]").take(60).forEach { element ->
                         add(
                             News(
                                 time = element.select("span[class=hour data_calc]").text(),
