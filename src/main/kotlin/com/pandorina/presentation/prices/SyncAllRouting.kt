@@ -45,9 +45,9 @@ fun Route.syncAllRouting(){
         DenizliPriceRepository().syncPrices()?.let {
             if (it.statusCode != 200) return@post call.respond("Denizli sync is failed!")
         }
-        /*KonyaPriceRepository().syncPrices()?.let {
+        KonyaPriceRepository().syncPrices()?.let {
             if (it.statusCode != 200) return@post call.respond("Konya sync is failed!")
-        }*/
+        }
         call.respond("Sync is successful!")
     }
 }
