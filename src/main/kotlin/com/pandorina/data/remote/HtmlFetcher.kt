@@ -10,7 +10,10 @@ class HtmlFetcher<T>(
     val parseHtml: (Document) -> T) {
     suspend operator fun invoke(): Flow<JsoupResult<T>> = flow {
         try {
-            val jsoup = Jsoup.connect(url).get()
+            System.setProperty("http.proxyHost", "192.168.5.1");
+            System.setProperty("http.proxyPort", "1080");
+            val jsoup = Jsoup.connect(url)
+                .get()
             emit(JsoupResult.Success(parseHtml.invoke(jsoup)))
         } catch (e: Exception){
             emit(JsoupResult.Error(e))
