@@ -8,33 +8,32 @@ class AlanyaPriceRepository : BasePriceRepository() {
 
     companion object{
         const val cityId = "alanya"
-        const val srcUrl = "https://www.batiakdeniztv.com/alanya-hal-fiyatlari-s47.html"
+        const val srcUrl = "https://www.batiakdeniztv.com/alanya-hal-fiyatlari"
     }
     override suspend fun syncPrices(): SyncResponse? {
         return HtmlFetcher<List<JsoupPrice>>(
             url = srcUrl,
             parseHtml = { jsoup ->
                 mutableListOf<JsoupPrice>().apply {
-                    val elements = jsoup.select("table[style=width:366px;] tr")
-                    val date = jsoup.select("tr > td > p > strong > span > span[style=line-height:115%] > span").text()
-                    for (i in 0 until elements.size){
-                        val row = elements[i].select("td")
+                    val elements = jsoup.select("table")[0]?.select("tr")
+                    val date = jsoup.select("div > span > strong")[0].text()
+                    elements?.forEach { element ->
+                        val row = element.select("td")
                         val icon = row.getOrNull(0)?.select("img")?.attr("src")
                         val name = row.getOrNull(1)?.text()
                         val price = row.getOrNull(2)?.text()
-                        if (name?.isNotEmpty() == true && price?.isNotEmpty() == true)
-                        add(
-                            JsoupPrice(
-                                cityId = cityId,
-                                priceDate = date,
-                                name = name,
-                                icon = icon,
-                                measure = "Kilogram",
-                                pricePrimary = price,
-                                priceSecondary = null
+                        if (icon?.isNotBlank() == true && name?.isNotBlank() == true && price?.isNotBlank() == true)
+                            add(
+                                JsoupPrice(
+                                    cityId = cityId,
+                                    priceDate = date,
+                                    name = name,
+                                    icon = icon,
+                                    measure = "Kilogram",
+                                    pricePrimary = price,
+                                    priceSecondary = null
+                                )
                             )
-                        )
-                        if (size == 9) break
                     }
                 }
             }
