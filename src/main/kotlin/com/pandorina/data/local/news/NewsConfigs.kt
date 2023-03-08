@@ -1,4 +1,4 @@
-package com.pandorina.domain.config
+package com.pandorina.data.local.news
 
 
 const val URL_SON_DAKIKA = "https://www.sondakika.com"
@@ -48,7 +48,7 @@ sealed class NewsConfig(
         title = "Yerel",
         srcUrl = "$URL_SON_DAKIKA/yerel"
     )
-    fun toNewsConfigModel(): NewsConfigModel{
+    fun toNewsConfigModel(): NewsConfigModel {
         return NewsConfigModel(
             id = id,
             title = title,

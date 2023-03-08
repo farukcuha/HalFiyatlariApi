@@ -1,19 +1,14 @@
-package com.pandorina.presentation.news
+package com.pandorina.routes.currency
 
 import com.pandorina.data.remote.JsoupResult
-import com.pandorina.data.repository.news.NewsRepository
-import io.ktor.http.*
+import com.pandorina.data.repository.currency.CurrenciesRepository
 import io.ktor.server.application.*
 import io.ktor.server.response.*
 import io.ktor.server.routing.*
 
-fun Route.newsRouting(){
-    get{
-        val categoryId = call.request.queryParameters["category_id"] ?: return@get call.respond(
-            message = "Missing category id!",
-            status = HttpStatusCode.BadRequest
-        )
-        when(val result = NewsRepository(categoryId).fetchNews()){
+fun Route.currenciesRouting(){
+    get {
+        when(val result = CurrenciesRepository().fetchCurrencies()){
             is JsoupResult.Success -> {
                 result.data?.let { call.respond(it) }
             }

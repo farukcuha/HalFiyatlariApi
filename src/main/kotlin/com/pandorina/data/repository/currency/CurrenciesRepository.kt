@@ -3,7 +3,7 @@ package com.pandorina.data.repository.currency
 import com.pandorina.data.remote.HtmlFetcher
 import com.pandorina.data.remote.JsoupResult
 import com.pandorina.data.remote.collectJsoupResult
-import com.pandorina.domain.model.Currency
+import com.pandorina.model.Currency
 
 class CurrenciesRepository {
 

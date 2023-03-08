@@ -1,4 +1,4 @@
-package com.pandorina.domain.model
+package com.pandorina.model
 
 @kotlinx.serialization.Serializable
 data class Currency(

@@ -1,4 +1,4 @@
-package com.pandorina.presentation.news
+package com.pandorina.routes.news
 
 import com.pandorina.data.local.news.NewsDataSource
 import io.ktor.server.application.*

@@ -1,10 +1,10 @@
 package com.pandorina.plugins
 
-import com.pandorina.presentation.currency.currenciesRouting
-import com.pandorina.presentation.news.categoryRouting
-import com.pandorina.presentation.news.newsRouting
-import com.pandorina.presentation.photo.getPhoto
-import com.pandorina.presentation.prices.*
+import com.pandorina.routes.currency.currenciesRouting
+import com.pandorina.routes.news.categoryRouting
+import com.pandorina.routes.news.newsRouting
+import com.pandorina.routes.photo.getPhoto
+import com.pandorina.routes.cities.*
 import io.ktor.server.application.*
 import io.ktor.server.http.content.*
 import io.ktor.server.response.*
@@ -15,14 +15,8 @@ fun Application.configureRouting() {
         get {
             return@get call.respond("Welcome to HalFiyatlari server!")
         }
-        route("/prices") {
-            syncRouting()
-            syncAllRouting()
+        route("/cities") {
             getCities()
-            datesRouting()
-            fetchRouting()
-            deleteRouting()
-            manualEntryRouting()
         }
         route("/news"){
             categoryRouting()

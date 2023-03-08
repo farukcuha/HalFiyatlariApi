@@ -1,11 +1,11 @@
 package com.pandorina.data.repository.news
 
 import com.pandorina.data.local.news.NewsDataSource
-import com.pandorina.domain.model.News
+import com.pandorina.model.News
 import com.pandorina.data.remote.HtmlFetcher
 import com.pandorina.data.remote.JsoupResult
 import com.pandorina.data.remote.collectJsoupResult
-import com.pandorina.domain.config.URL_SON_DAKIKA
+import com.pandorina.data.local.news.URL_SON_DAKIKA
 
 class NewsRepository(
     val id: String
